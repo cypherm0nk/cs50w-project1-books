@@ -1,0 +1,74 @@
+{% extends "base_layout.html" %}
+{% block title %}
+Register new account
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Register</a></li>
+        </ol>
+      </nav>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category,message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h2>Register new account:</h2>
+    <form action="/register" method="POST" class="needs-validation"
+        oninput='password2.setCustomValidity(password2.value != password.value ? "Passwords do not match." : "")'
+        novalidate>
+        <div class="form-group">
+            <label for="textName">Name</label>
+            <input type="text" class="form-control" name="name" id="textName" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please provide a name.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="textUsername">Username</label>
+            <input type="text" class="form-control" name="username" id="textUsername" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please provide a username.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="textPassword">Password</label>
+            <input type="password" class="form-control" name="password" id="textPassword" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please provide a password.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="textPassword2">Password</label>
+            <input type="password" class="form-control" name="password2" id="textPassword2" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Passwords do not match.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Create account</button>
+    </form>
+</div>
+
+{% endblock %}

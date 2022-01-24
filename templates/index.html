@@ -1,0 +1,49 @@
+{% extends "base_layout.html" %}
+<style>
+    .user_name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .comments-list .media {
+        border-bottom: 1px dotted #ccc;
+    }
+</style>
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Search</a></li>
+        </ol>
+    </nav>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category,message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="container ">
+        <form action="/search" method="GET" class="needs-validation" novalidate>
+            <div class="form-group">
+                <h5 class="card-title"><label for="idsearch">Search for a book(ISBN, Title or Author): </label></h5>
+                <input class="form-control" type="text" id="idsearch" placeholder="Search" aria-label="Search" name="s"
+                    required>
+                <div class="invalid-feedback">
+                    The search cannot be empty!
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">SEARCH</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

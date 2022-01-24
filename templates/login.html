@@ -1,0 +1,48 @@
+{% extends "base_layout.html" %}
+{% block title %}
+    LOGIN:
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Login</a></li>
+    </ol>
+  </nav>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category,message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+        <div class="form-group">
+          <label for="textUsername">Username</label>
+          <input type="text" class="form-control" name="username" id="textUsername" required>
+          <div class="invalid-feedback">
+            Please provide a username
+        </div>
+        </div>
+        <div class="form-group">
+          <label for="textPassword">Password</label>
+          <input type="password" class="form-control" name="password" id="textPassword"required>
+          <div class="invalid-feedback">
+            Please enter the password!
+        </div>
+        </div>
+        
+        <button type="submit" class="btn btn-success my-1">Login</button>
+        <div class="custom-control my-1 mr-sm-2">
+         
+          <a  href="{{url_for('register')}}">Don't have an account? Register here</a>
+       </div>
+      </form>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base_layout.html" %}
+<style>
+  .user_name {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .comments-list .media {
+    border-bottom: 1px dotted #ccc;
+  }
+</style>
+{% block title %}
+{%if book: %}
+{{ book.title }}
+{%endif%}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">book</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ book.title }}</li>
+    </ol>
+  </nav>
+  {% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+  {% for category,message in messages %}
+  <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+    {{message}}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  {%if book: %}
+  <div class="container">
+
+    <div class="col-lg-9">
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <h3 class="card-title">{{ book.title }}</h3>
+          <dl class="row">
+            <dt class="col-sm-3">ISBN:</dt>
+            <dd class="col-sm-9">{{ book.isbn }}</dd>
+            <dt class="col-sm-3">Author:</dt>
+            <dd class="col-sm-9">{{ book.author }}</dd>
+            <dt class="col-sm-3">Year:</dt>
+            <dd class="col-sm-9">{{ book.year }}</dd>
+            <dt class="col-sm-3">Total Ratings:</dt>
+            <dd class="col-sm-9">{{ book.count_ratings }}</dd>
+            <dt class="col-sm-3">Rate:</dt>
+            <dd class="col-sm-9">{{'%0.2f'|format(book.total_rating|float)}}</dd>
+            {%if goodreads: %}
+            <dt class="col-sm-3">GoodReads Total Ratings:</dt>
+            <dd class="col-sm-9">{{goodreads.ratings_count}}</dd>
+            <dt class="col-sm-3">GoodReads Average Ratings:</dt>
+            <dd class="col-sm-9">{{goodreads.average_rating}}</dd>
+            {%endif%}
+
+          </dl>
+        </div>
+
+      </div>
+      <!-- /.card -->
+      <div class="card card-outline-secondary my-4">
+        <div class="card-header">
+          Write a review
+        </div>
+        <div class="card-body">
+          <form action="/review" method="POST" class="needs-validation" Fnovalidate>
+            <div class="form-group">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">My rating:</label>
+                <select class="form-control" name="myRating" id="selectMyRating">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <label for="textComment">Comment</label>
+              <textarea type="text" class="form-control" name="comment" id="textComment" required></textarea>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                Please provide a name.
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-success">Send Review</button>
+          </form>
+        </div>
+      </div>
+      <div class="card card-outline-secondary my-4">
+        <div class="card-header">
+          Book Reviews
+        </div>
+        <div class="card-body">
+          {%if reviews: %}
+          {% for review in reviews %}
+          <h5 class="card-title">{{review.name}} - Rated it:{{'%0.2f'|format(review.rating|float)}}</h5>
+          <p>{{review.comment}}</p>
+          <small class="text-muted">Posted on {{ review.datetime.strftime('%B %d, %Y %I:%M:%S') }}</small>
+          <hr>
+          {%endfor%}
+          {%else%}
+          <p>There is no review for this book yet!</p>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+</div>
+{% endblock %}
